@@ -150,7 +150,7 @@ def make_ma_mujoco_env(scenario, agent_conf, seed, cfg_train):
     else:
         return ShareSubprocVecEnv([get_env_fn(i) for i in range(cfg_train['n_rollout_threads'])])
 
-def make_ma_multi_goal_env(task, seed, cfg_train):
+def make_ma_multi_goal_env(task, seed,num_agents, cfg_train):
     """
     Creates and returns a multi-agent environment using MuJoCo scenarios.
 
@@ -172,6 +172,7 @@ def make_ma_multi_goal_env(task, seed, cfg_train):
             env=MultiGoalEnv(
                 task=task,
                 seed=seed,
+                num_agents=num_agents,
             )
             return env
 

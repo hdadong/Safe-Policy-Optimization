@@ -71,6 +71,7 @@ layer_N: 2
 std_x_coef: 1
 std_y_coef: 0.5
 
+
 mamujoco: 
   use_valuenorm: True
   layer_N: 1
@@ -78,6 +79,22 @@ mamujoco:
   episode_length: 1000
   n_rollout_threads: 10
   n_eval_rollout_threads: 10
+  hidden_size: 128
+  gamma: 0.99
+  safety_gamma: 0.2
+  fraction_coef: 0.1
+  kl_threshold: 0.01
+  ppo_epoch: 15
+  entropy_coef: 0.01
+
+multi_goal:
+  num_agents: 2
+  use_valuenorm: True
+  layer_N: 1
+  num_env_steps: 10000000
+  episode_length: 1000
+  n_rollout_threads: 1
+  n_eval_rollout_threads: 1
   hidden_size: 128
   gamma: 0.99
   safety_gamma: 0.2

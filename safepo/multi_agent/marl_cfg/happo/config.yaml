@@ -72,3 +72,12 @@ mamujoco:
   hidden_size: 128
   gamma: 0.99
   entropy_coef: 0.01
+
+multi_goal: 
+  num_env_steps: 10000000
+  episode_length: 1000
+  n_rollout_threads: 1
+  n_eval_rollout_threads: 1
+  hidden_size: 128
+  gamma: 0.99
+  entropy_coef: 0.01

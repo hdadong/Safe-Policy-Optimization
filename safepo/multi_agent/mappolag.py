@@ -54,7 +54,7 @@ class MAPPO_L_Policy:
         self.actor = Actor(config, obs_space, act_space, self.config["device"])
         self.critic = Critic(config, cent_obs_space, self.config["device"])
         self.cost_critic = Critic(config, cent_obs_space, self.config["device"])
-
+        print("cent_obs_space", cent_obs_space)
         self.actor_optimizer = torch.optim.Adam(
             self.actor.parameters(), lr=self.config["actor_lr"], eps=self.config["opti_eps"], weight_decay=self.config["weight_decay"]
             )
@@ -308,6 +308,7 @@ class Runner:
         train_episode_costs = torch.zeros(1, self.config["n_rollout_threads"], device=self.config["device"])
         eval_rewards=0.0
         eval_costs=0.0
+        total_num_steps = 0
         for episode in range(episodes):
 
             done_episodes_rewards = []
@@ -317,12 +318,12 @@ class Runner:
                 # Sample actions
                 values, actions, action_log_probs, rnn_states, rnn_states_critic, cost_preds, \
                 rnn_states_cost = self.collect(step)
-                obs, share_obs, rewards, costs, dones, infos, _ = self.envs.step(actions)
+                obs, share_obs, rewards, costs, dones, infos, _, current_total_steps = self.envs.step(actions)
 
                 dones_env = torch.all(dones, dim=1)
 
-                reward_env = torch.mean(rewards, dim=1).flatten()
-                cost_env = torch.mean(costs, dim=1).flatten()
+                reward_env = torch.mean(rewards.float(), dim=1).flatten()
+                cost_env = torch.mean(costs.float(), dim=1).flatten()
 
                 train_episode_rewards += reward_env
                 train_episode_costs += cost_env
@@ -340,10 +341,11 @@ class Runner:
                        rnn_states, rnn_states_critic, cost_preds, rnn_states_cost, done_episodes_costs_aver
 
                 self.insert(data)
+                if dones_env[0]:
+                    break
             self.compute()
             self.train()
-
-            total_num_steps = (episode + 1) * self.config["episode_length"] * self.config["n_rollout_threads"]
+            total_num_steps += current_total_steps #(episode + 1) * self.config["episode_length"] * self.config["n_rollout_threads"]
 
             if (episode % self.config["save_interval"] == 0 or episode == episodes - 1):
                 self.save()
@@ -361,11 +363,13 @@ class Runner:
                     **{
                         "Metrics/EpRet": aver_episode_rewards.item(),
                         "Metrics/EpCost": aver_episode_costs.item(),
+                        "Metrics/EpStep": current_total_steps,
+
                         "Eval/EpRet": eval_rewards,
                         "Eval/EpCost": eval_costs,
                     }
                 )
-                
+                self.logger.log_tabular("Metrics/EpStep", min_and_max=False, std=False)
                 self.logger.log_tabular("Metrics/EpRet", min_and_max=True, std=True)
                 self.logger.log_tabular("Metrics/EpCost", min_and_max=True, std=True)
                 self.logger.log_tabular("Eval/EpRet")
@@ -622,11 +626,11 @@ def train(args, cfg_train):
         cfg_train["n_eval_rollout_threads"] = env.num_envs
         eval_env = env
     elif args.task in multi_agent_goal_tasks:
-        env = make_ma_multi_goal_env(task=args.task, seed=args.seed, cfg_train=cfg_train)
+        env = make_ma_multi_goal_env(task=args.task, seed=args.seed, num_agents=args.num_agents, cfg_train=cfg_train)
         cfg_eval = copy.deepcopy(cfg_train)
         cfg_eval["seed"] = args.seed + 10000
         cfg_eval["n_rollout_threads"] = cfg_eval["n_eval_rollout_threads"]
-        eval_env = make_ma_multi_goal_env(task=args.task, seed=args.seed + 10000, cfg_train=cfg_eval)
+        eval_env = make_ma_multi_goal_env(task=args.task, seed=args.seed + 10000, num_agents=args.num_agents, cfg_train=cfg_eval)
     else: 
         raise NotImplementedError
     
@@ -637,6 +641,7 @@ def train(args, cfg_train):
         runner.eval(100000)
     else:
         runner.run()
+# nohup python -u mappolag.py --task SafetyRacecarCoverGoal1-v0 --seed 0 --num-agents 2 > seed20_mappolag_cargoal1.txt 2>&1 &
 
 if __name__ == '__main__':
     set_np_formatting()

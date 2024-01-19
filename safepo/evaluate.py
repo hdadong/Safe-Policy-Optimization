@@ -107,6 +107,7 @@ def eval_multi_agent(eval_dir, eval_episodes):
         eval_env = make_ma_multi_goal_env(
             task=env_name,
             seed=np.random.randint(0, 1000),
+            num_agents=config['num_agents'],
             cfg_train=config,
         )
 

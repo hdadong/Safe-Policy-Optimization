@@ -1,0 +1,105 @@
+2469194
+nohup python -u mappolag.py --task SafetyPointCoverGoal1-v0 --seed 0 > seed0_mappolag_pointgoal1.txt 2>&1 &
+2469295
+nohup python -u mappolag.py --task SafetyPointCoverGoal1-v0 --seed 5 > seed5_mappolag_pointgoal1.txt 2>&1 &
+2469455
+nohup python -u mappolag.py --task SafetyPointCoverGoal1-v0 --seed 10 > seed10_mappolag_pointgoal1.txt 2>&1 &
+
+2469545
+nohup python -u mappolag.py --task SafetyPointCoverGoal3-v0 --seed 0 > seed0_mappolag_pointgoal3.txt 2>&1 &
+2469634
+nohup python -u mappolag.py --task SafetyPointCoverGoal3-v0 --seed 5 > seed5_mappolag_pointgoal3.txt 2>&1 &
+2469881
+nohup python -u mappolag.py --task SafetyPointCoverGoal3-v0 --seed 10 > seed10_mappolag_pointgoal3.txt 2>&1 &
+
+2470141
+nohup python -u mappolag.py --task SafetyPointCoverGoal4-v0 --seed 0 > seed0_mappolag_pointgoal4.txt 2>&1 &
+2470236
+nohup python -u mappolag.py --task SafetyPointCoverGoal4-v0 --seed 5 > seed5_mappolag_pointgoal4.txt 2>&1 &
+2470607
+nohup python -u mappolag.py --task SafetyPointCoverGoal4-v0 --seed 10 > seed10_mappolag_pointgoal4.txt 2>&1 &
+
+3641649
+nohup python -u mappolag.py --task SafetyPointCoverGoal3-v0 --seed 20 --num-agents 4 > seed20_mappolag_covergoal3.txt 2>&1 &
+3641754
+nohup python -u mappolag.py --task SafetyPointCoverGoal3-v0 --seed 25 --num-agents 4 > seed25_mappolag_covergoal3.txt 2>&1 &
+3642017
+nohup python -u mappolag.py --task SafetyPointCoverGoal3-v0 --seed 30 --num-agents 4 > seed30_mappolag_covergoal3.txt 2>&1 &
+
+
+3642312
+nohup python -u mappolag.py --task SafetyPointCoverGoal4-v0 --seed 20 --num-agents 6 > seed20_mappolag_covergoal4.txt 2>&1 &
+3642412
+nohup python -u mappolag.py --task SafetyPointCoverGoal4-v0 --seed 25 --num-agents 6 > seed25_mappolag_covergoal4.txt 2>&1 &
+3642581
+nohup python -u mappolag.py --task SafetyPointCoverGoal4-v0 --seed 30 --num-agents 6 > seed30_mappolag_covergoal4.txt 2>&1 &
+
+
+
+4173061
+nohup python -u happo.py --task SafetyPointCoverGoal1-v0 --seed 20 --num-agents 2 > seed20_happo_pointgoal1.txt 2>&1 &
+4173503
+nohup python -u happo.py --task SafetyPointCoverGoal1-v0 --seed 25 --num-agents 2 > seed25_happo_pointgoal1.txt 2>&1 &
+4173658
+nohup python -u happo.py --task SafetyPointCoverGoal1-v0 --seed 30 --num-agents 2 > seed30_happo_pointgoal1.txt 2>&1 &
+
+4173829
+nohup python -u happo.py --task SafetyPointCoverGoal3-v0 --seed 20 --num-agents 4 > seed20_happo_covergoal3.txt 2>&1 &
+4174049
+nohup python -u happo.py --task SafetyPointCoverGoal3-v0 --seed 25 --num-agents 4 > seed25_happo_covergoal3.txt 2>&1 &
+4174366
+nohup python -u happo.py --task SafetyPointCoverGoal3-v0 --seed 30 --num-agents 4 > seed30_happo_covergoal3.txt 2>&1 &
+
+4174659
+nohup python -u happo.py --task SafetyPointCoverGoal4-v0 --seed 20 --num-agents 6 > seed20_happo_covergoal4.txt 2>&1 &
+4175229
+nohup python -u happo.py --task SafetyPointCoverGoal4-v0 --seed 25 --num-agents 6 > seed25_happo_covergoal4.txt 2>&1 &
+4175710
+nohup python -u happo.py --task SafetyPointCoverGoal4-v0 --seed 30 --num-agents 6 > seed30_happo_covergoal4.txt 2>&1 &
+
+
+
+
+1750091
+nohup python -u macpo.py --task SafetyPointCoverGoal1-v0 --seed 20 --num-agents 2 > seed20_macpo_pointgoal1.txt 2>&1 &
+1750194
+nohup python -u macpo.py --task SafetyPointCoverGoal1-v0 --seed 25 --num-agents 2 > seed25_macpo_pointgoal1.txt 2>&1 &
+1750348
+nohup python -u macpo.py --task SafetyPointCoverGoal1-v0 --seed 30 --num-agents 2 > seed30_macpo_pointgoal1.txt 2>&1 &
+
+1750524
+nohup python -u macpo.py --task SafetyPointCoverGoal3-v0 --seed 20 --num-agents 4 > seed20_macpo_covergoal3.txt 2>&1 &
+1750723
+nohup python -u macpo.py --task SafetyPointCoverGoal3-v0 --seed 25 --num-agents 4 > seed25_macpo_covergoal3.txt 2>&1 &
+1751106
+nohup python -u macpo.py --task SafetyPointCoverGoal3-v0 --seed 30 --num-agents 4 > seed30_macpo_covergoal3.txt 2>&1 &
+
+
+1748402
+nohup python -u macpo.py --task SafetyRacecarCoverGoal1-v0 --seed 0 --num-agents 2 > seed20_macpo_cargoal1.txt 2>&1 &
+1748762
+nohup python -u macpo.py --task SafetyRacecarCoverGoal1-v0 --seed 5 --num-agents 2 > seed25_macpo_cargoal1.txt 2>&1 &
+1748876
+nohup python -u macpo.py --task SafetyRacecarCoverGoal1-v0 --seed 1 --num-agents 2 > seed30_macpo_cargoal1.txt 2>&1 &
+
+1749079
+nohup python -u macpo.py --task SafetyRacecarCoverGoal3-v0 --seed 0 --num-agents 4 > seed20_macpo_cargoal3.txt 2>&1 &
+1749305
+nohup python -u macpo.py --task SafetyRacecarCoverGoal3-v0 --seed 5 --num-agents 4 > seed25_macpo_cargoal3.txt 2>&1 &
+1749477
+nohup python -u macpo.py --task SafetyRacecarCoverGoal3-v0 --seed 1 --num-agents 4 > seed30_macpo_cargoal3.txt 2>&1 &
+
+
+1751910
+nohup python -u mappolag.py --task SafetyRacecarCoverGoal1-v0 --seed 0 --num-agents 2 > seed20_mappolag_cargoal1.txt 2>&1 &
+1752072
+nohup python -u mappolag.py --task SafetyRacecarCoverGoal1-v0 --seed 5 --num-agents 2 > seed25_mappolag_cargoal1.txt 2>&1 &
+1752385
+nohup python -u mappolag.py --task SafetyRacecarCoverGoal1-v0 --seed 1 --num-agents 2 > seed30_mappolag_cargoal1.txt 2>&1 &
+
+1752566
+nohup python -u mappolag.py --task SafetyRacecarCoverGoal3-v0 --seed 0 --num-agents 4 > seed20_mappolag_cargoal3.txt 2>&1 &
+1752811
+nohup python -u mappolag.py --task SafetyRacecarCoverGoal3-v0 --seed 5 --num-agents 4 > seed25_mappolag_cargoal3.txt 2>&1 &
+1752942
+nohup python -u mappolag.py --task SafetyRacecarCoverGoal3-v0 --seed 1 --num-agents 4 > seed30_mappolag_cargoal3.txt 2>&1 &

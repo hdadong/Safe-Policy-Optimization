@@ -21,7 +21,7 @@ eval_interval: 25
 log_interval: 25
 eval_episodes: 10000
 
-safety_bound: 25
+safety_bound: 2
 lagrangian_coef_rate: 1.e-5
 lamda_lagr: 0.78
 
@@ -73,6 +73,22 @@ mamujoco:
   episode_length: 1000
   n_rollout_threads: 10
   n_eval_rollout_threads: 10
+  hidden_size: 128
+  gamma: 0.99
+  entropy_coef: 0.01
+  actor_lr: 5.e-4
+  critic_lr: 5.e-4
+  max_grad_norm: 10.0
+  use_value_active_masks: True
+  use_policy_active_masks: True
+  data_chunk_length: 10
+
+multi_goal:
+  num_agents: 2
+  num_env_steps: 10000000
+  episode_length: 1000
+  n_rollout_threads: 1
+  n_eval_rollout_threads: 1
   hidden_size: 128
   gamma: 0.99
   entropy_coef: 0.01

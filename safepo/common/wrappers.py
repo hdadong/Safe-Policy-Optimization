@@ -71,19 +71,20 @@ class MultiGoalEnv():
         self,
         task,
         seed,
+        num_agents,
     ):
-        self.env = safety_gymnasium.make(task)
-        self.single_action_space = self.env.action_space('agent_0')
+        self.num_agents = num_agents
 
-        self.action_spaces = {
-            'agent_0': self.env.action_space('agent_0'),
-            'agent_1': self.env.action_space('agent_1'),
-        }
+        self.env = safety_gymnasium.make(task, agent_num=self.num_agents)
+        self.single_action_space = self.env.action_space['agent_0']
+        self.action_spaces = {}
+        for i in range(self.num_agents):
+            self.action_spaces['agent_' + str(i)] = self.env.action_space['agent_' + str(i)]
         self.env.reset(seed=seed)
-        self.num_agents = 2
         self.n_actions = self.single_action_space.shape[0]
         self.share_obs_size = self._get_share_obs_size()
         self.obs_size=self._get_obs_size()
+        print("share_obs_size", self.share_obs_size, self.obs_size)
         self.share_observation_spaces = {}
         self.observation_spaces = {}
         for agent in range(self.num_agents):
@@ -102,7 +103,7 @@ class MultiGoalEnv():
         for a in range(self.num_agents):
             agent_id_feats = np.zeros(self.num_agents, dtype=np.float32)
             agent_id_feats[a] = 1.0
-            obs_i = np.concatenate([state, agent_id_feats])
+            obs_i = np.concatenate([state['agent_'+str(a)], agent_id_feats])
             obs_i = (obs_i - np.mean(obs_i)) / np.std(obs_i)
             obs_n.append(obs_i)
         return obs_n
@@ -111,7 +112,9 @@ class MultiGoalEnv():
         return len(self._get_obs()[0])
 
     def _get_share_obs(self):
-        state = self.env.task.obs()
+        state = self.env.task.obs()#['agent_0']
+        share_state = np.concatenate([state['agent_'+str(i)] for i in range(self.num_agents)])
+        state = share_state
         state_normed = (state - np.mean(state)) / (np.std(state)+1e-8)
         share_obs = []
         for _ in range(self.num_agents):
@@ -487,6 +490,8 @@ class ShareSubprocVecEnv(ShareVecEnv):
 class ShareDummyVecEnv(ShareVecEnv):
     def __init__(self, env_fns, device=torch.device("cpu")):
         self.envs = [fn() for fn in env_fns]
+        self.num_env = len(env_fns)
+        assert self.num_env == 1, "num_env support 1"
         env = self.envs[0]
         self.device = device
         self.num_agents=env.num_agents
@@ -502,23 +507,29 @@ class ShareDummyVecEnv(ShareVecEnv):
     def step_wait(self):
         results = [env.step(a) for (a, env) in zip(self.actions, self.envs)]
         obs, share_obs, rews, cos, dones, infos, available_actions = map(np.array, zip(*results))
-
+        self.total_step += 1
+        total_steps = 0
         for i, done in enumerate(dones):
             if np.all(done):
                 obs[i], share_obs[i], available_actions[i] = self.envs[i].reset()
+                if self.num_env==1:
+                    total_steps = self.total_step
+                    self.total_step=0
         self.actions = None
 
         obs, share_obs, rews, cos, dones, available_actions = map(
             lambda x: torch.tensor(x).to(self.device), (obs, share_obs, rews, cos, dones, available_actions)
         )
 
-        return obs, share_obs, rews, cos, dones, infos, available_actions
+        return obs, share_obs, rews, cos, dones, infos, available_actions, total_steps
 
     def reset(self):
         results = [env.reset() for env in self.envs]
         obs, share_obs, available_actions = map(
             lambda x: torch.tensor(np.stack(x), device=self.device), zip(*results)
         )
+        if self.num_env==1:
+            self.total_step=0
         return obs, share_obs, available_actions
 
     def render(self):

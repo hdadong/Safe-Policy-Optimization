@@ -551,11 +551,12 @@ def train(args, cfg_train):
         cfg_train["n_eval_rollout_threads"] = env.num_envs
         eval_env = env
     elif args.task in multi_agent_goal_tasks:
-        env = make_ma_multi_goal_env(task=args.task, seed=args.seed, cfg_train=cfg_train)
+        env = make_ma_multi_goal_env(task=args.task, seed=args.seed, num_agents=args.num_agents, cfg_train=cfg_train)
         cfg_eval = copy.deepcopy(cfg_train)
         cfg_eval["seed"] = args.seed + 10000
         cfg_eval["n_rollout_threads"] = cfg_eval["n_eval_rollout_threads"]
-        eval_env = make_ma_multi_goal_env(task=args.task, seed=args.seed + 10000, cfg_train=cfg_eval)
+        eval_env = make_ma_multi_goal_env(task=args.task, seed=args.seed + 10000, num_agents=args.num_agents, cfg_train=cfg_eval)
+
     else: 
         raise NotImplementedError
     

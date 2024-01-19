@@ -68,6 +68,14 @@ multi_agent_goal_tasks = [
     "SafetyAntMultiGoal0-v0",
     "SafetyAntMultiGoal1-v0",
     "SafetyAntMultiGoal2-v0",
+    "SafetyPointCoverGoal1-v0",
+    "SafetyPointCoverGoal2-v0",
+    "SafetyPointCoverGoal3-v0",
+    "SafetyPointCoverGoal4-v0",
+    "SafetyRacecarCoverGoal1-v0",
+    "SafetyRacecarCoverGoal2-v0",
+    "SafetyRacecarCoverGoal3-v0",
+    "SafetyRacecarCoverGoal4-v0",
 ]
 
 isaac_gym_map = {
@@ -210,6 +218,8 @@ def multi_agent_args(algo):
         {"name": "--total-steps", "type": int, "default": None, "help": "Total timesteps of the experiments"},
         {"name": "--num-envs", "type": int, "default": None, "help": "The number of parallel game environments"},
         {"name": "--randomize", "type": bool, "default": False, "help": "Wheather to randomize the environments' initial states"},
+        {"name": "--num-agents", "type": int, "default": 2, "help": "The number of agents"},
+
     ]
     # Create argument parser
     parser = argparse.ArgumentParser(description="RL Policy")
@@ -238,7 +248,7 @@ def multi_agent_args(algo):
             args.agent_conf = multi_agent_velocity_map[args.task]["agent_conf"]
             args.scenario = multi_agent_velocity_map[args.task]["scenario"]
         elif args.task in multi_agent_goal_tasks:
-            cfg_train.update(cfg_train.get("mamujoco"))
+            cfg_train.update(cfg_train.get("multi_goal"))
 
     cfg_train["use_eval"] = args.use_eval
     cfg_train["safety_bound"]=args.safety_bound
